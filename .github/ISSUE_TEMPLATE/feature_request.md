@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-## Feature Description
+**Feature Description**
 Describe the feature or enhancement.
 
 **Is your feature request related to a problem? Please describe.**
