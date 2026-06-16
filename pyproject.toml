@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "zoo-runner-common"
@@ -25,7 +25,11 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
-    "loguru>=0.7.0",
+    "loguru",
+    "attrs",
+    "PyYAML",
+    "click",
+    "cwl-utils>=0.14",
 ]
 
 [project.urls]
@@ -35,6 +39,7 @@ Repository = "https://github.com/ZOO-Project/zoo-runner-common"
 Issues = "https://github.com/ZOO-Project/zoo-runner-common/issues"
 Changelog = "https://github.com/ZOO-Project/zoo-runner-common/blob/main/CHANGELOG.md"
 
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["zoo_runner_common*"]
+[tool.hatch.build.targets.wheel]
+packages = [
+    "zoo_runner_common"
+]
