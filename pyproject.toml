@@ -39,7 +39,22 @@ Repository = "https://github.com/ZOO-Project/zoo-runner-common"
 Issues = "https://github.com/ZOO-Project/zoo-runner-common/issues"
 Changelog = "https://github.com/ZOO-Project/zoo-runner-common/blob/main/CHANGELOG.md"
 
-[tool.hatch.build.targets.wheel]
-packages = [
-    "zoo_runner_common"
+
+[tool.hatch.envs.default]
+dependencies = [
+    "loguru",
+    "attrs",
+    "PyYAML",
+    "click",
+    "cwl-utils>=0.14",
 ]
+
+[tool.hatch.envs.test]
+dependencies = [
+    "pytest",
+    "pytest-cov",
+]
+
+[tool.hatch.envs.test.scripts]
+test = "pytest {args}"
+test-q = "pytest -q {args}"
