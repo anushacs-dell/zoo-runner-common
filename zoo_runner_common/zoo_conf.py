@@ -29,12 +29,12 @@ class CWLWorkflow:
     def __init__(self, cwl, workflow_id):
         self.raw_cwl = cwl
         self.workflow_id = workflow_id
-        
+
         # Load the entire CWL document and convert to v1.2
         # Use load_cwl_from_yaml instead of load_document_by_yaml for proper version conversion
         from cwl_loader import load_cwl_from_yaml
-        
-        parsed_cwl = load_cwl_from_yaml(cwl, uri="io://", cwl_version='v1.2', sort=True)
+
+        parsed_cwl = load_cwl_from_yaml(cwl, uri="io://", cwl_version="v1.2", sort=True)
 
         # Ensure self.cwl is always a list containing all CWL elements
         if not isinstance(parsed_cwl, list):
@@ -71,7 +71,7 @@ class CWLWorkflow:
         for inp in self.get_workflow().inputs:
             if mandatory:
                 # Use type_ instead of type (cwl-utils API change)
-                inp_type = getattr(inp, 'type_', getattr(inp, 'type', None))
+                inp_type = getattr(inp, "type_", getattr(inp, "type", None))
                 if inp.default is not None or inp_type == ["null", "string"]:
                     continue
                 else:
@@ -132,7 +132,7 @@ class CWLWorkflow:
                 if isinstance(hint, dict):
                     if hint.get("class") == "ResourceRequirement":
                         resource_requirement.append(ResourceRequirement.from_dict(hint))
-                elif hasattr(hint, 'class_'):
+                elif hasattr(hint, "class_"):
                     if hint.class_ == "ResourceRequirement":
                         resource_requirement.append(hint)
 
@@ -232,17 +232,19 @@ class ZooInputs:
 
     def get_processing_parameters(self, workflow=None):
         """Returns a list with the input parameters keys
-        
+
         Args:
             workflow: Optional CWL workflow object (currently unused, for future compatibility)
         """
         import json
-        
+
         res = {}
         allowed_types = ["integer", "float", "boolean", "double"]
-        
+
         for key, value in self.inputs.items():
-            if "format" in value and not("dataType" in value and value["dataType"] in allowed_types):
+            if "format" in value and not (
+                "dataType" in value and value["dataType"] in allowed_types
+            ):
                 res[key] = {
                     "format": value["format"],
                     "value": value["value"],
@@ -275,21 +277,27 @@ class ZooInputs:
                     if "isArray" in value and value["isArray"] == "true":
                         res[key] = []
                         for i in range(len(value["value"])):
-                            res[key].append({
-                                "format": value["mimeType"][i] if "mimeType" in value else "text/plain",
-                                "value": value["value"][i],
-                            })
+                            res[key].append(
+                                {
+                                    "format": value["mimeType"][i]
+                                    if "mimeType" in value
+                                    else "text/plain",
+                                    "value": value["value"][i],
+                                }
+                            )
                     else:
                         res[key] = {
                             "format": value.get("mimeType", "text/plain"),
-                            "value": value["value"]
+                            "value": value["value"],
                         }
                 else:
                     if "lowerCorner" in value and "upperCorner" in value:
                         res[key] = {
                             "format": "ogc-bbox",
                             "bbox": json.loads(value["value"]),
-                            "crs": value["crs"].replace("http://www.opengis.net/def/crs/OGC/1.3/", "")
+                            "crs": value["crs"].replace(
+                                "http://www.opengis.net/def/crs/OGC/1.3/", ""
+                            ),
                         }
                     else:
                         res[key] = value["value"]

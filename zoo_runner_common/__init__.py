@@ -8,7 +8,7 @@ from zoo_runner_common.zoostub import ZooStub
 __all__ = [
     "BaseRunner",
     "ZooConf",
-    "ZooInputs", 
+    "ZooInputs",
     "ZooOutputs",
     "CWLWorkflow",
     "ExecutionHandler",
@@ -17,6 +17,7 @@ __all__ = [
 
 try:
     from importlib.metadata import version
+
     __version__ = version("zoo-runner-common")
 except Exception:
     __version__ = "unknown"
