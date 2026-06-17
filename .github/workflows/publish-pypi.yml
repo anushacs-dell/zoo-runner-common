@@ -1,9 +1,6 @@
 name: Publish to PyPI
 
 on:
-  push:
-    branches:
-      - feature/runner-common
   release:
     types: [published]
   workflow_dispatch:
