@@ -1,5 +1,6 @@
-import pytest
 from unittest.mock import MagicMock, patch
+
+import pytest
 
 from zoo_runner_common.base_runner import BaseRunner
 

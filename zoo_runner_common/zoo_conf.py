@@ -2,8 +2,7 @@ import inspect
 import os
 
 import attr
-import cwl_utils
-from cwl_utils.parser import load_document_by_yaml
+import cwl_utils.parser
 
 
 # useful class for hints in CWL
@@ -31,7 +30,8 @@ class CWLWorkflow:
         self.workflow_id = workflow_id
 
         # Load the entire CWL document and convert to v1.2
-        # Use load_cwl_from_yaml instead of load_document_by_yaml for proper version conversion
+        # Use load_cwl_from_yaml instead of load_document_by_yaml
+        # for proper version conversion
         from cwl_loader import load_cwl_from_yaml
 
         parsed_cwl = load_cwl_from_yaml(cwl, uri="io://", cwl_version="v1.2", sort=True)
@@ -234,7 +234,8 @@ class ZooInputs:
         """Returns a list with the input parameters keys
 
         Args:
-            workflow: Optional CWL workflow object (currently unused, for future compatibility)
+            workflow: Optional CWL workflow object (currently unused,
+              for future compatibility)
         """
         import json
 
