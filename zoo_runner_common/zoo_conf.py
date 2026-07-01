@@ -4,6 +4,8 @@ import os
 import attr
 import cwl_utils.parser
 
+import cwl_utils
+import re
 
 # useful class for hints in CWL
 @attr.s
@@ -209,6 +211,7 @@ class ZooConf:
 
 
 class ZooInputs:
+
     def __init__(self, inputs):
         # this conversion is necessary
         # because zoo converts array of length 1 to a string
@@ -293,12 +296,15 @@ class ZooInputs:
                         }
                 else:
                     if "lowerCorner" in value and "upperCorner" in value:
+                        prefix_list = [
+                            "http://www.opengis.net/def/crs/OGC/0/",
+                            "http://www.opengis.net/def/crs/OGC/1.3/"
+                        ]
+                        pattern = re.compile("|".join(map(re.escape, prefix_list)))
                         res[key] = {
                             "format": "ogc-bbox",
                             "bbox": json.loads(value["value"]),
-                            "crs": value["crs"].replace(
-                                "http://www.opengis.net/def/crs/OGC/1.3/", ""
-                            ),
+                            "crs": pattern.sub("", value["crs"])
                         }
                     else:
                         res[key] = value["value"]
